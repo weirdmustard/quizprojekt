@@ -32,12 +32,15 @@ class QuizFrame extends JFrame {
         setLayout(new BorderLayout());
 
         // Load questions from JSON
-        questionList = loadQuestionsFromJson("questions.json");
+        questionList = loadQuestionsFromJson("src/questions.json");
 
         // Upper section: Question Label
         questionLabel = new JLabel("Loading question...", SwingConstants.CENTER);
         questionLabel.setFont(new Font("Arial", Font.BOLD, 24));
         add(questionLabel, BorderLayout.NORTH);
+        
+        ImageIcon imageIcon = new ImageIcon(getClass().getClassLoader().getResource("res/images/question" + questionIndex + ".jpg"));
+        imageLabel.setIcon(imageIcon);
 
         // Lower section: Answer Buttons
         JPanel buttonPanel = new JPanel();
