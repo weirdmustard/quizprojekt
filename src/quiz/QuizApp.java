@@ -34,7 +34,7 @@ class QuizFrame extends JFrame {
         setLayout(new BorderLayout());
 
         // Load questions from JSON
-        questionList = loadQuestionsFromJson("res/questions.json");
+        questionList = loadQuestionsFromJson("src/res/questions.json");
 
         // Upper section: Question Label
         questionLabel = new JLabel("Loading question...", SwingConstants.CENTER);
@@ -77,7 +77,7 @@ class QuizFrame extends JFrame {
         }
     }
 
-    public void loadNextQuestion() {
+    private void loadNextQuestion() {
         if (currentQuestionIndex >= questionList.size()) {
             questionLabel.setText("Quiz finished!");
             imageLabel.setIcon(null); // Hide image when quiz is over
@@ -87,8 +87,8 @@ class QuizFrame extends JFrame {
         Question question = questionList.get(currentQuestionIndex);
         questionLabel.setText(question.question);
 
-        // Dynamically load the image for each question
-        ImageIcon imageIcon = new ImageIcon(getClass().getClassLoader().getResource("res/images/question" + (currentQuestionIndex + 1) + ".jpg"));
+        // Dynamically load the image for each question using the id
+        ImageIcon imageIcon = new ImageIcon(getClass().getClassLoader().getResource("res/images/question" + question.id + ".jpg"));
         imageLabel.setIcon(imageIcon);
 
         for (int i = 0; i < 4; i++) {
@@ -97,7 +97,7 @@ class QuizFrame extends JFrame {
             answerButtons[i].setEnabled(true);
         }
     }
-
+    
     public void checkAnswer(int index) {
         Question question = questionList.get(currentQuestionIndex);
         boolean isCorrect = (index == question.correct);

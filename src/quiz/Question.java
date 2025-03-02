@@ -1,39 +1,50 @@
 package quiz;
 
 public class Question {
-    public String question;
+	public int id;
+	public String question;
     public String[] answers; 
     public int correct;      
 
     public Question() {}
 
-    public Question(String question, String[] answers, int correct) {
-        this.question = question;
+    public Question(int id, String question, String[] answers, int correct) {
+    	this.id = id;
+    	this.question = question;
         this.answers = answers;
         this.correct = correct;
     }
 
-    public String getQuestion() {
-        return question;
-    }
+	public int getId() {
+		return id;
+	}
 
-    public void setQuestion(String question) {
-        this.question = question;
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    public String[] getAnswers() {
-        return answers;
-    }
+	public String getQuestion() {
+		return question;
+	}
 
-    public void setAnswers(String[] answers) {
-        this.answers = answers;
-    }
+	public void setQuestion(String question) {
+		this.question = question;
+	}
 
-    public int getCorrect() {
-        return correct;
-    }
+	public String[] getAnswers() {
+		return answers;
+	}
 
-    public void setCorrect(int correct) {
-        this.correct = correct;
-    }
+	public void setAnswers(String[] answers) {
+		this.answers = answers;
+	}
+
+	public int getCorrect() {
+		return correct;
+	}
+
+	public void setCorrect(int correct) {
+		this.correct = correct;
+	}
+
 }
