@@ -2,7 +2,6 @@ package quiz;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
@@ -19,7 +18,10 @@ public class QuizApp {
 }
 
 class QuizFrame extends JFrame {
-    private JLabel questionLabel;
+  
+	private static final long serialVersionUID = 1L;
+	private JLabel questionLabel;
+    private JLabel imageLabel; // Label to display the image
     private JButton[] answerButtons;
     private List<Question> questionList;
     private int currentQuestionIndex = 0;
@@ -32,15 +34,17 @@ class QuizFrame extends JFrame {
         setLayout(new BorderLayout());
 
         // Load questions from JSON
-        questionList = loadQuestionsFromJson("src/questions.json");
+        questionList = loadQuestionsFromJson("res/questions.json");
 
         // Upper section: Question Label
         questionLabel = new JLabel("Loading question...", SwingConstants.CENTER);
         questionLabel.setFont(new Font("Arial", Font.BOLD, 24));
         add(questionLabel, BorderLayout.NORTH);
-        
-        ImageIcon imageIcon = new ImageIcon(getClass().getClassLoader().getResource("res/images/question" + questionIndex + ".jpg"));
-        imageLabel.setIcon(imageIcon);
+
+        // Upper section: Image Label
+        imageLabel = new JLabel();
+        imageLabel.setHorizontalAlignment(JLabel.CENTER);
+        add(imageLabel, BorderLayout.CENTER); // Add image label in the center
 
         // Lower section: Answer Buttons
         JPanel buttonPanel = new JPanel();
@@ -63,7 +67,7 @@ class QuizFrame extends JFrame {
         setVisible(true);
     }
 
-    private List<Question> loadQuestionsFromJson(String filePath) {
+    public List<Question> loadQuestionsFromJson(String filePath) {
         try {
             String json = new String(Files.readAllBytes(Paths.get(filePath)));
             return new Gson().fromJson(json, new TypeToken<ArrayList<Question>>() {}.getType());
@@ -73,14 +77,19 @@ class QuizFrame extends JFrame {
         }
     }
 
-    private void loadNextQuestion() {
+    public void loadNextQuestion() {
         if (currentQuestionIndex >= questionList.size()) {
             questionLabel.setText("Quiz finished!");
+            imageLabel.setIcon(null); // Hide image when quiz is over
             return;
         }
 
         Question question = questionList.get(currentQuestionIndex);
         questionLabel.setText(question.question);
+
+        // Dynamically load the image for each question
+        ImageIcon imageIcon = new ImageIcon(getClass().getClassLoader().getResource("res/images/question" + (currentQuestionIndex + 1) + ".jpg"));
+        imageLabel.setIcon(imageIcon);
 
         for (int i = 0; i < 4; i++) {
             answerButtons[i].setText(question.answers[i]);
@@ -89,7 +98,7 @@ class QuizFrame extends JFrame {
         }
     }
 
-    private void checkAnswer(int index) {
+    public void checkAnswer(int index) {
         Question question = questionList.get(currentQuestionIndex);
         boolean isCorrect = (index == question.correct);
 
@@ -107,10 +116,4 @@ class QuizFrame extends JFrame {
             }
         }, 3000);
     }
-}
-
-class Question {
-    String question;
-    String[] answers;
-    int correct;
 }
